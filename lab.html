@@ -390,8 +390,11 @@ canvas { display: block; width: 100%; border-radius: 12px; touch-action: manipul
   const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   const redraws = [];
   const redrawAll = () => redraws.forEach((f) => f());
+  // 캔버스의 원래 높이(HTML에 적은 값)를 한 번만 기억해요.
+  // 고해상도 화면에서 cv.height를 바꾸면 height 속성도 같이 바뀌어서, 매번 읽으면 그래프가 끝없이 커져요.
+  const logicalH = (cv) => +(cv.dataset.h ||= cv.getAttribute("height"));
   function fit(cv) {
-    const dpr = devicePixelRatio || 1, w = cv.clientWidth, h = Number(cv.getAttribute("height"));
+    const dpr = devicePixelRatio || 1, w = cv.clientWidth, h = logicalH(cv);
     cv.style.height = h + "px";
     if (cv.width !== Math.round(w * dpr) || cv.height !== Math.round(h * dpr)) { cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr); }
     const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0); c.clearRect(0, 0, w, h);
@@ -559,7 +562,7 @@ canvas { display: block; width: 100%; border-radius: 12px; touch-action: manipul
     syncSliders(); showCalc(); animateTo(ms); drawLoss();
   }
   $("cls").addEventListener("click", (e) => {
-    const cv = $("cls"), p = evPos(cv, e), M = axes(cv.clientWidth, +cv.getAttribute("height"));
+    const cv = $("cls"), p = evPos(cv, e), M = axes(cv.clientWidth, logicalH(cv));
     let best = null, bd = 24;
     A.forEach(([, s, ee], i) => { const d = Math.hypot(M.X(s) - p.x, M.Y(ee) - p.y); if (d < bd) { bd = d; best = i; } });
     if (Math.hypot(M.X(NEW[1]) - p.x, M.Y(NEW[2]) - p.y) < bd) best = -1;
@@ -663,7 +666,7 @@ canvas { display: block; width: 100%; border-radius: 12px; touch-action: manipul
     $("supReset").onclick = () => { fruits = F0.map((f) => [...f]); probe = null; $("supInfo").innerHTML = `<span class="lead">그래프 위에 마우스를 올려 보세요.</span>`; drawSup(); };
     supInfo();
   }
-  function supPos(e) { const cv = $("sup"), p = evPos(cv, e), M = axes(cv.clientWidth, +cv.getAttribute("height")); return { x: Math.max(0, Math.min(10, M.iX(p.x))), y: Math.max(0, Math.min(10, M.iY(p.y))) }; }
+  function supPos(e) { const cv = $("sup"), p = evPos(cv, e), M = axes(cv.clientWidth, logicalH(cv)); return { x: Math.max(0, Math.min(10, M.iX(p.x))), y: Math.max(0, Math.min(10, M.iY(p.y))) }; }
   let supRaf = 0;
   $("sup").addEventListener("pointermove", (e) => { if (supMode !== -1) return; probe = supPos(e); if (!supRaf) supRaf = requestAnimationFrame(() => { supRaf = 0; drawSup(); supInfo(); }); });
   $("sup").addEventListener("click", (e) => {
@@ -863,7 +866,7 @@ canvas { display: block; width: 100%; border-radius: 12px; touch-action: manipul
     });
   }
   $("map").addEventListener("click", (e) => {
-    const cv = $("map"), p = evPos(cv, e), M = mapM(cv.clientWidth, +cv.getAttribute("height"));
+    const cv = $("map"), p = evPos(cv, e), M = mapM(cv.clientWidth, logicalH(cv));
     let best = -1, bd = 28; WORDS.forEach((wd, i) => { const d = Math.hypot(M.X(wd[1]) - p.x, M.Y(wd[2]) - p.y); if (d < bd) { bd = d; best = i; } });
     if (best < 0) return;
     analogyOn = false; picked = picked.length >= 2 ? [best] : picked.includes(best) ? picked : [...picked, best];
