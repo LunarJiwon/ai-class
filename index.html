@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>나만의 인공지능 만들기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;700&display=swap">
+<style>
+/* Layout: 가운데 정렬된 한 화면 — 제목, 큰 카드 2개(채팅·실험실), 아래 선생님용 안내 */
+:root {
+  --bg: #F7F5FF; --surface: #FEFDFF; --surface-2: #ECE8FF; --ink: #1E1B3A; --ink-2: #5A5678;
+  --line: #E2DDF7; --accent: #6C5CE7; --warm: #E17055; --warm-soft: #FFF1E8;
+  --font-display: "Jua", "Malgun Gothic", sans-serif;
+  --font-body: "Noto Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", system-ui, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { --bg: #15132A; --surface: #1E1B3A; --surface-2: #2C2752; --ink: #F1EEFF; --ink-2: #ADA7D6; --line: #353063; --accent: #9C8FF5; --warm: #F0907A; --warm-soft: #3A2419; color-scheme: dark; }
+}
+:root[data-theme="dark"] { --bg: #15132A; --surface: #1E1B3A; --surface-2: #2C2752; --ink: #F1EEFF; --ink-2: #ADA7D6; --line: #353063; --accent: #9C8FF5; --warm: #F0907A; --warm-soft: #3A2419; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.6;
+  background-image: radial-gradient(var(--line) 1.2px, transparent 1.2px); background-size: 22px 22px; }
+.wrap { max-width: 960px; margin: 0 auto; padding: 48px 20px 56px; display: flex; flex-direction: column; gap: 28px; }
+.eyebrow { margin: 0; color: var(--accent); font-weight: 700; letter-spacing: .04em; }
+h1 { margin: 4px 0 6px; font-family: var(--font-display); font-weight: 400; font-size: clamp(40px, 7vw, 68px); line-height: 1.1; }
+.lead { margin: 0; color: var(--ink-2); font-size: 18px; }
+.cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.card { display: flex; flex-direction: column; gap: 10px; padding: 28px; border-radius: 24px; text-decoration: none; color: var(--ink); background: var(--surface); border: 2px solid var(--line); transition: transform .15s, border-color .15s, box-shadow .15s; }
+.card:hover, .card:focus-visible { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 10px 28px color-mix(in srgb, var(--accent) 18%, transparent); outline: none; }
+.card .em { font-size: 52px; line-height: 1; }
+.card h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 30px; }
+.card p { margin: 0; color: var(--ink-2); }
+.card .go { margin-top: auto; align-self: flex-start; padding: 8px 18px; border-radius: 999px; background: var(--accent); color: #fff; font-family: var(--font-display); font-size: 18px; }
+.card.main { background: var(--accent); border-color: var(--accent); color: #fff; }
+.card.main p { color: color-mix(in srgb, #fff 82%, transparent); }
+.card.main .go { background: #fff; color: var(--accent); }
+.teacher { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; }
+.teacher h3 { margin: 0; font-size: 18px; }
+.teacher ol { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px; }
+.teacher a { color: var(--accent); font-weight: 700; }
+.teacher code { background: var(--surface-2); padding: 1px 6px; border-radius: 6px; font-size: 14px; }
+.note { background: var(--warm-soft); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+footer { color: var(--ink-2); font-size: 13px; text-align: center; }
+@media (max-width: 700px) { .cards { grid-template-columns: 1fr; } .wrap { padding-top: 32px; } }
+@media (prefers-reduced-motion: reduce) { .card { transition: none; } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <header>
+    <p class="eyebrow">SW 과학 단디캠프 · 강사 문지원</p>
+    <h1>나만의 인공지능 만들기</h1>
+    <p class="lead">AI는 어떻게 배우고, 어떻게 우리 말을 알아들을까?</p>
+  </header>
+
+  <section class="cards" aria-label="실습 페이지">
+    <a class="card main" href="chat.html">
+      <span class="em">🤖</span>
+      <h2>나만의 AI 채팅</h2>
+      <p>내 노트북 속 AI와 대화하고, 코드를 고쳐 나만의 AI를 만들어요. 오른쪽에서 AI의 머릿속 4단계를 볼 수 있어요.</p>
+      <span class="go">실습 시작 →</span>
+    </a>
+    <a class="card" href="lab.html">
+      <span class="em">🧪</span>
+      <h2>AI 개념 실험실</h2>
+      <p>AI란 무엇일까, AI는 어떻게 배울까, 배우는 방법 3가지, 글자를 숫자로. 직접 눌러 보며 원리를 알아봐요.</p>
+      <span class="go">실험실 열기 →</span>
+    </a>
+  </section>
+
+  <section class="teacher" aria-label="선생님용 안내">
+    <h3>👩‍🏫 선생님용 · 실습 PC 준비</h3>
+    <ol>
+      <li><a href="설치_도우미.bat" download>설치 도우미 내려받기</a> → 실습 PC에서 더블클릭 (Ollama 설치, 모델 받기, 연결 설정을 한 번에)</li>
+      <li>채팅 페이지 오른쪽 위에 <b>AI 연결됨 ✓</b>이 보이면 준비 끝</li>
+    </ol>
+    <div class="note">처음 채팅 페이지를 열면 크롬 위쪽에 <b>"로컬 네트워크의 기기에 액세스"</b> 허용 창이 뜰 수 있어요. <b>허용</b>을 누른 뒤 화면의 <b>다시 연결</b>을 눌러 주세요. AI는 인터넷이 아니라 학생 노트북 안(Ollama)에서 돌아가서, 질문 내용이 밖으로 나가지 않아요.</div>
+  </section>
+
+  <footer>AI 모델: EXAONE 3.5 2.4B (Ollama) · 글꼴: Jua, Pretendard, Noto Sans KR (SIL OFL)</footer>
+</main>
+</body>
+</html>
